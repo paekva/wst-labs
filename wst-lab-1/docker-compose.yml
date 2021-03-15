@@ -7,3 +7,16 @@ services:
       - "5432:5432"
     image: postgre_image_wst
     container_name: postgre
+  glassfish:
+    build:
+      context: ./containers/glassfish
+    image: wst_1_glassfish_image
+    container_name: glassfish
+    links:
+      - postgre
+    depends_on:
+      - postgre
+    ports:
+      - 8080:8080
+      - 4848:4848
+      - 8181:8181
