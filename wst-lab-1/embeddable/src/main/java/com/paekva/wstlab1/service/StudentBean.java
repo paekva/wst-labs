@@ -1,6 +1,6 @@
 package com.paekva.wstlab1.service;
 
-import com.paekva.wstlab1.database.UserDAO;
+import com.paekva.wstlab1.database.StudentDAO;
 import lombok.Data;
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
@@ -9,12 +9,12 @@ import javax.sql.DataSource;
 
 @Data
 @ApplicationScoped
-public class UsersBean {
-  @Resource(lookup = "jdbc/users")
+public class StudentBean {
+  @Resource(lookup = "jdbc/students")
   private DataSource dataSource;
 
   @Produces
-  public UserDAO userDAO() {
-    return new UserDAO(dataSource);
+  public StudentDAO studentDAO() {
+    return new StudentDAO(dataSource);
   }
 }

@@ -18,6 +18,7 @@
     <modules>
         <module>persistence</module>
         <module>embeddable</module>
+        <module>standalone</module>
         <module>client</module>
     </modules>
 

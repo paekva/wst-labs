@@ -1,9 +1,9 @@
 package com.paekva.wstlab1;
 
 import com.paekva.wstlab1.client.service.SQLException_Exception;
-import com.paekva.wstlab1.client.service.User;
-import com.paekva.wstlab1.client.service.Users;
-import com.paekva.wstlab1.client.service.UsersService;
+import com.paekva.wstlab1.client.service.Student;
+import com.paekva.wstlab1.client.service.Students;
+import com.paekva.wstlab1.client.service.StudentsService;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -18,9 +18,9 @@ import java.util.TimeZone;
 
 public class Client {
     public static void main(String... args) throws SQLException_Exception, IOException {
-        URL url = new URL("http://localhost:8080/users?wsdl");
-        Users usersService = new Users(url);
-        UsersService userPort = usersService.getUsersServicePort();
+        URL url = new URL("http://localhost:8080/students?wsdl");
+        Students studentsService = new Students(url);
+        StudentsService studentPort = studentsService.getStudentsServicePort();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int currentState = 0;
@@ -36,27 +36,27 @@ public class Client {
                     break;
                 case 1:
                     System.out.println("Найдено:");
-                    userPort.findAll().stream().map(Client::userToString).forEach(System.out::println);
+                    studentPort.findAll().stream().map(Client::studentToString).forEach(System.out::println);
                     currentState = 0;
                     break;
                 case 2:
                     System.out.println("\nЧтобы не применять фильтр, оставьте значение пустым");
                     System.out.println("id:");
                     Long id = readLong(reader);
-                    System.out.println("login:");
-                    String login = readString(reader);
-                    System.out.println("password:");
-                    String password = readString(reader);
                     System.out.println("email:");
                     String email = readString(reader);
-                    System.out.println("gender:");
-                    Boolean gender = readBoolean(reader);
-                    System.out.println("registerDate(yyyy-mm-dd):");
-                    XMLGregorianCalendar registerDate = readDate(reader);
+                    System.out.println("password:");
+                    String password = readString(reader);
+                    System.out.println("group number:");
+                    String groupNumber = readString(reader);
+                    System.out.println("is local:");
+                    Boolean isLocal = readBoolean(reader);
+                    System.out.println("birthDate(yyyy-mm-dd):");
+                    XMLGregorianCalendar birthDate = readDate(reader);
                     System.out.println("Найдено:");
-                    userPort.findWithFilters(id, login, password, email, gender, registerDate)
+                    studentPort.findWithFilters(id, email, password, groupNumber, isLocal, birthDate)
                             .stream()
-                            .map(Client::userToString)
+                            .map(Client::studentToString)
                             .forEach(System.out::println);
                     currentState = 0;
                     break;
@@ -128,13 +128,13 @@ public class Client {
         }
     }
 
-    private static String userToString(User user) {
-        return "User{" +
-                "id=" + user.getId() +
-                ", email='" + user.getEmail() + '\'' +
-                ", group number='" + user.getGroupNumber() + '\'' +
-                ", is local=" + user.isIsLocal() +
-                ", birthDate=" + user.getBirthDate() +
+    private static String studentToString(Student student) {
+        return "Student{" +
+                "id=" + student.getId() +
+                ", email='" + student.getEmail() + '\'' +
+                ", group number='" + student.getGroupNumber() + '\'' +
+                ", is local=" + student.isIsLocal() +
+                ", birthDate=" + student.getBirthDate() +
                 '}';
     }
 }

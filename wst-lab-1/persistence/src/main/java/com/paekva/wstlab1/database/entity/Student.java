@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Student {
   private Long id;
 
   private String password;
@@ -23,7 +23,7 @@ public class User {
 
   @Override
   public String toString() {
-    return "User{" +
+    return "Student{" +
         "id=" + id +
         ", group number='" + groupNumber + '\'' +
         ", email='" + email + '\'' +

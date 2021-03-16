@@ -1,6 +1,6 @@
 package com.paekva.wstlab1.database;
 
-import com.paekva.wstlab1.database.entity.User;
+import com.paekva.wstlab1.database.entity.Student;
 import com.paekva.wstlab1.database.util.CriteriaBuilder;
 import com.paekva.wstlab1.database.util.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +20,10 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Slf4j
-public class UserDAO {
+public class StudentDAO {
   private final DataSource dataSource;
 
-  private final String TABLE_NAME = "users";
+  private final String TABLE_NAME = "students";
 
   private final String ID = "id";
 
@@ -33,13 +33,13 @@ public class UserDAO {
 
   private final String GROUP_NUMBER = "group_number";
 
-  private final String IS_LOCAL = "isLocal";
+  private final String IS_LOCAL = "is_local";
 
   private final String BIRTH_DATE = "birth_date";
 
   private final String[] columnNames = {ID, PASSWORD, EMAIL, GROUP_NUMBER, IS_LOCAL, BIRTH_DATE};
 
-  public List<User> findAll() throws SQLException {
+  public List<Student> findAll() throws SQLException {
     log.info("Find all");
     try (Connection connection = dataSource.getConnection()) {
       java.sql.Statement statement = connection.createStatement();
@@ -53,7 +53,7 @@ public class UserDAO {
     }
   }
 
-  public List<User> findWithFilters(
+  public List<Student> findWithFilters(
       Long id,
       String groupNumber,
       String password,
@@ -102,21 +102,21 @@ public class UserDAO {
     return where;
   }
 
-  private List<User> resultSetToList(ResultSet rs) throws SQLException {
-    List<User> result = new ArrayList<>();
+  private List<Student> resultSetToList(ResultSet rs) throws SQLException {
+    List<Student> result = new ArrayList<>();
     while (rs.next()) {
       result.add(toEntity(rs));
     }
     return result;
   }
 
-  private User toEntity(ResultSet rs) throws SQLException {
+  private Student toEntity(ResultSet rs) throws SQLException {
     long id = rs.getLong(ID);
     String password = rs.getString(PASSWORD);
     String email = rs.getString(EMAIL);
     String groupNumber = rs.getString(GROUP_NUMBER);
     Boolean isLocal = rs.getBoolean(IS_LOCAL);
     Date birthDate = rs.getDate(BIRTH_DATE);
-    return new User(id, password, email, groupNumber, isLocal, birthDate);
+    return new Student(id, password, email, groupNumber, isLocal, birthDate);
   }
 }
