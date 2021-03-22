@@ -2,6 +2,8 @@ package com.paekva.wstlab3.service;
 
 import com.paekva.wstlab3.database.StudentDAO;
 import com.paekva.wstlab3.database.entity.Student;
+import com.paekva.wstlab3.exceptions.StudentsServiceException;
+import com.paekva.wstlab3.exceptions.StudentsServiceFault;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -36,8 +38,22 @@ public class StudentsService {
     }
 
     @WebMethod
-    public boolean delete(@WebParam(name = "id") Long id) throws SQLException {
-        return studentDAO.delete(id);
+    public boolean delete(@WebParam(name = "id") Long id) throws StudentsServiceException {
+        try {
+            if (id == null) {
+                String message = "Id can't be null";
+                throw new StudentsServiceException(message, new StudentsServiceFault(message));
+            }
+            boolean delete = studentDAO.delete(id);
+            if (!delete) {
+                String message = String.format("Can't delete User. User with specified id: %s not found ", id);
+                throw new StudentsServiceException(message, new StudentsServiceFault(message));
+            }
+            return delete;
+        } catch (SQLException e) {
+            String message = "SQL exception: " + e.getMessage() + ". State: " + e.getSQLState();
+            throw new StudentsServiceException(message, e, new StudentsServiceFault(message));
+        }
     }
 
     @WebMethod
@@ -45,8 +61,13 @@ public class StudentsService {
             @WebParam(name = "email") String email, @WebParam(name = "password") String password,
             @WebParam(name = "groupNumber") String groupNumber, @WebParam(name = "isLocal") Boolean isLocal,
             @WebParam(name = "birthDate") XMLGregorianCalendar birthDate
-    ) throws SQLException {
-        return studentDAO.insert(email, password, groupNumber, isLocal, birthDate);
+    ) throws StudentsServiceException {
+        try {
+            return studentDAO.insert(email, password, groupNumber, isLocal, birthDate);
+        } catch (SQLException e) {
+            String message = "SQL exception: " + e.getMessage() + ". State: " + e.getSQLState();
+            throw new StudentsServiceException(message, e, new StudentsServiceFault(message));
+        }
     }
 
     @WebMethod
@@ -55,7 +76,17 @@ public class StudentsService {
             @WebParam(name = "email") String email, @WebParam(name = "password") String password,
             @WebParam(name = "groupNumber") String groupNumber, @WebParam(name = "isLocal") Boolean isLocal,
             @WebParam(name = "birthDate") XMLGregorianCalendar birthDate
-    ) throws SQLException {
-        return studentDAO.update(id, email, password, groupNumber, isLocal, birthDate);
+    ) throws StudentsServiceException {
+        try {
+            boolean update = studentDAO.update(id, email, password, groupNumber, isLocal, birthDate);
+            if (!update) {
+                String message = String.format("Can't update User. User with specified id: %s not found ", id);
+                throw new StudentsServiceException(message, new StudentsServiceFault(message));
+            }
+            return update;
+        } catch (SQLException e) {
+            String message = "SQL exception: " + e.getMessage() + ". State: " + e.getSQLState();
+            throw new StudentsServiceException(message, e, new StudentsServiceFault(message));
+        }
     }
 }
