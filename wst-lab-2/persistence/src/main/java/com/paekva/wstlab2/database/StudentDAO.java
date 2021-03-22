@@ -137,17 +137,34 @@ public class StudentDAO {
         CriteriaBuilder cb = new CriteriaBuilder();
         cb = cb.update(TABLE_NAME);
 
-        var emailColumn = new AbstractMap.SimpleImmutableEntry<String, String>(EMAIL, email);
-        var passwordColumn = new AbstractMap.SimpleImmutableEntry<String, String>(PASSWORD, password);
-        var loginColumn = new AbstractMap.SimpleImmutableEntry<String, String>(GROUP_NUMBER, groupNumber);
-        var isLocalColumn = new AbstractMap.SimpleImmutableEntry<String, String>(
-                IS_LOCAL,
-                isLocal.toString());
-        var birthDateColumn = new AbstractMap.SimpleImmutableEntry<String, String>(
-                BIRTH_DATE,
-                new SimpleDateFormat("yyyy.MM.dd")
-                        .format(bDate));
-        cb.setColumns(loginColumn, passwordColumn, emailColumn, isLocalColumn, birthDateColumn);
+        final ArrayList<Map.Entry<String, String>> toUpdate = new ArrayList<>();
+        if (email != null) {
+            var emailColumn = new AbstractMap.SimpleImmutableEntry<String, String>(EMAIL, email);
+            toUpdate.add(emailColumn);
+        }
+        if (password != null) {
+            var passwordColumn = new AbstractMap.SimpleImmutableEntry<String, String>(PASSWORD, password);
+            toUpdate.add(passwordColumn);
+        }
+        if (groupNumber != null) {
+            var groupNumberColumn = new AbstractMap.SimpleImmutableEntry<String, String>(GROUP_NUMBER, groupNumber);
+            toUpdate.add(groupNumberColumn);
+        }
+        if (isLocal != null) {
+            var isLocalColumn = new AbstractMap.SimpleImmutableEntry<String, String>(
+                    IS_LOCAL,
+                    isLocal.toString());
+            toUpdate.add(isLocalColumn);
+        }
+        if (bDate != null) {
+            var birthDateColumn = new AbstractMap.SimpleImmutableEntry<String, String>(
+                    BIRTH_DATE,
+                    new SimpleDateFormat("yyyy.MM.dd")
+                            .format(bDate));
+            toUpdate.add(birthDateColumn);
+        }
+
+        cb.setColumns(toUpdate);
 
         Predicate predicate = new Predicate();
         cb.where(predicate.and(ID + " = " + id.toString()));

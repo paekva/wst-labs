@@ -57,7 +57,7 @@ public class CriteriaBuilder {
         return this;
     }
 
-    public void setColumns(Map.Entry<String, String>... columns) {
+    public void setColumns(Iterable<Map.Entry<String, String>> columns) {
         for (Map.Entry<String, String> column : columns) {
             append(column.getKey(), "= '");
             builder.append(column.getValue());
