@@ -46,5 +46,11 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/../standalone/target/standalone-1.0-client.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>com.paekva</groupId>
+            <artifactId>standalone</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

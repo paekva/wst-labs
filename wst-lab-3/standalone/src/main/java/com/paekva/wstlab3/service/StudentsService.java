@@ -46,7 +46,7 @@ public class StudentsService {
             }
             boolean delete = studentDAO.delete(id);
             if (!delete) {
-                String message = String.format("Can't delete User. User with specified id: %s not found ", id);
+                String message = String.format("По данному id: %s никого не найдено", id);
                 throw new StudentsServiceException(message, new StudentsServiceFault(message));
             }
             return delete;
@@ -62,6 +62,11 @@ public class StudentsService {
             @WebParam(name = "groupNumber") String groupNumber, @WebParam(name = "isLocal") Boolean isLocal,
             @WebParam(name = "birthDate") XMLGregorianCalendar birthDate
     ) throws StudentsServiceException {
+        if (email == null || password == null || groupNumber == null || isLocal == null || birthDate == null) {
+            String message = "Все поля должны быть заполнены.";
+            throw new StudentsServiceException(message, null, new StudentsServiceFault(message));
+        }
+
         try {
             return studentDAO.insert(email, password, groupNumber, isLocal, birthDate);
         } catch (SQLException e) {
@@ -80,7 +85,7 @@ public class StudentsService {
         try {
             boolean update = studentDAO.update(id, email, password, groupNumber, isLocal, birthDate);
             if (!update) {
-                String message = String.format("Can't update User. User with specified id: %s not found ", id);
+                String message = String.format("По данному id: %s никого не найдено", id);
                 throw new StudentsServiceException(message, new StudentsServiceFault(message));
             }
             return update;

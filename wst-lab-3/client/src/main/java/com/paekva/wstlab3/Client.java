@@ -1,9 +1,6 @@
 package com.paekva.wstlab3;
 
-import com.paekva.wstlab3.client.service.SQLException_Exception;
-import com.paekva.wstlab3.client.service.Student;
-import com.paekva.wstlab3.client.service.Students;
-import com.paekva.wstlab3.client.service.StudentsService;
+import com.paekva.wstlab3.client.service.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +10,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.Exception;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,48 +31,53 @@ public class Client {
 
 
         while (true) {
-            printOutHelpMessage();
-            currentState = readState(currentState, reader);
-            if (currentState < 0 || currentState > ConsoleOption.values().length) {
-                System.out.print(">");
-                continue;
-            } else if (currentState == 0) {
-                //printOutHelpMessage();
-                continue;
-            }
-            command = ConsoleOption.values()[currentState - 1];
-            switch (command) {
-                case FIND_ALL:
-                    studentsServicePort.findAll().stream().map(Client::studentToString).forEach(System.out::println);
-                    break;
-                case FIND_BY_FILTERS:
-                    System.out.println("\nЧтобы не применять фильтр, оставьте значение пустым");
-                    id = readLong(reader);
-                    studentDTO = readUser(reader);
-                    studentsServicePort.findWithFilters(id, studentDTO.getEmail(), studentDTO.getPassword(),
-                            studentDTO.getGroupNumber(), studentDTO.getIsLocal(), studentDTO.getBirthDate())
-                            .stream().map(Client::studentToString).forEach(System.out::println);
-                    break;
-                case INSERT:
-                    studentDTO = readUser(reader);
-                    System.out.println(studentsServicePort.insert(studentDTO.getEmail(), studentDTO.getPassword(),
-                            studentDTO.getGroupNumber(), studentDTO.getIsLocal(), studentDTO.getBirthDate()));
-                    break;
-                case UPDATE:
-                    System.out.println("\nВведите id:");
-                    id = readLong(reader);
-                    System.out.println("\nЧтобы не изменять значение поля, оставьте значение пустым");
-                    studentDTO = readUser(reader);
-                    System.out.println(studentsServicePort.update(id, studentDTO.getEmail(), studentDTO.getPassword(),
-                            studentDTO.getGroupNumber(), studentDTO.getIsLocal(), studentDTO.getBirthDate()));
-                    break;
-                case DELETE:
-                    System.out.println("\nВведите id:");
-                    id = readLong(reader);
-                    System.out.println(studentsServicePort.delete(id));
-                    break;
-                case QUIT:
-                    return;
+            try {
+                printOutHelpMessage();
+                currentState = readState(currentState, reader);
+                if (currentState < 0 || currentState > ConsoleOption.values().length) {
+                    System.out.print(">");
+                    continue;
+                } else if (currentState == 0) {
+                    //printOutHelpMessage();
+                    continue;
+                }
+                command = ConsoleOption.values()[currentState - 1];
+                switch (command) {
+                    case FIND_ALL:
+                        studentsServicePort.findAll().stream().map(Client::studentToString).forEach(System.out::println);
+                        break;
+                    case FIND_BY_FILTERS:
+                        System.out.println("\nЧтобы не применять фильтр, оставьте значение пустым");
+                        id = readLong(reader);
+                        studentDTO = readUser(reader);
+                        studentsServicePort.findWithFilters(id, studentDTO.getEmail(), studentDTO.getPassword(),
+                                studentDTO.getGroupNumber(), studentDTO.getIsLocal(), studentDTO.getBirthDate())
+                                .stream().map(Client::studentToString).forEach(System.out::println);
+                        break;
+                    case INSERT:
+                        studentDTO = readUser(reader);
+                        System.out.println(studentsServicePort.insert(studentDTO.getEmail(), studentDTO.getPassword(),
+                                studentDTO.getGroupNumber(), studentDTO.getIsLocal(), studentDTO.getBirthDate()));
+                        break;
+                    case UPDATE:
+                        System.out.println("\nВведите id:");
+                        id = readLong(reader);
+                        System.out.println("\nЧтобы не изменять значение поля, оставьте значение пустым");
+                        studentDTO = readUser(reader);
+                        System.out.println(studentsServicePort.update(id, studentDTO.getEmail(), studentDTO.getPassword(),
+                                studentDTO.getGroupNumber(), studentDTO.getIsLocal(), studentDTO.getBirthDate()));
+                        break;
+                    case DELETE:
+                        System.out.println("\nВведите id:");
+                        id = readLong(reader);
+                        System.out.println(studentsServicePort.delete(id));
+                        break;
+                    case QUIT:
+                        return;
+                }
+            } catch (StudentsServiceException e) {
+                System.out.println(e.getFaultInfo().getMessage());
+                System.out.println("Пожалуйста, попробуйте снова!");
             }
         }
     }

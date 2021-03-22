@@ -174,7 +174,7 @@ public class StudentDAO {
         try (Connection connection = dataSource.getConnection()) {
             java.sql.PreparedStatement s = connection.prepareStatement(c);
             int update = s.executeUpdate();
-            return true;
+            return (update > 0);
         } catch (SQLException e) {
             return false;
         }
@@ -193,7 +193,7 @@ public class StudentDAO {
         try (Connection connection = dataSource.getConnection()) {
             java.sql.Statement s = connection.createStatement();
             int update = s.executeUpdate(c);
-            return true;
+            return (update > 0);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

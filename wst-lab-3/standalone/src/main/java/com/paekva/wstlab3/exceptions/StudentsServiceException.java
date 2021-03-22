@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import javax.xml.ws.WebFault;
 
-@WebFault(faultBean = "com.paekva.wstlab3.exceptions.UserServiceFault")
+@WebFault(faultBean = "com.paekva.wstlab3.exceptions.StudentServiceFault")
 public class StudentsServiceException extends Exception {
     @Getter
     private final StudentsServiceFault faultInfo;
