@@ -4,6 +4,7 @@ import com.paekva.wstlab3.database.StudentDAO;
 import com.paekva.wstlab3.database.entity.Student;
 import com.paekva.wstlab3.exceptions.StudentsServiceException;
 import com.paekva.wstlab3.exceptions.StudentsServiceFault;
+import com.paekva.wstlab3.exceptions.ThrottlingException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -12,17 +13,29 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @WebService(serviceName = "students", targetNamespace = "students_namespace")
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentsService {
+    private final AtomicInteger connectionsCount = new AtomicInteger(0);
+    private final int MAX_CONNECTIONS = 3;
     private StudentDAO studentDAO;
 
     @WebMethod
-    public List<Student> findAll() throws SQLException {
-        return studentDAO.findAll();
+    public List<Student> findAll() throws SQLException, ThrottlingException {
+        try {
+            final int counter = connectionsCount.incrementAndGet();
+            if (counter > MAX_CONNECTIONS) {
+                throw new ThrottlingException("Sorry, service is unavailable, try again later");
+            }
+            return studentDAO.findAll();
+        } finally {
+            connectionsCount.decrementAndGet();
+        }
     }
 
     @WebMethod
