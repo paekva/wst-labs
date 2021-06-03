@@ -170,6 +170,7 @@ public class Client {
                 ", group number='" + student.getGroupNumber() + '\'' +
                 ", is local=" + student.isIsLocal() +
                 ", birthDate=" + student.getBirthDate() +
+                ", avatar: " + (student.getAvatar() == null ? "not-found" : "byte array of size " + student.getAvatar().length) +
                 '}';
     }
 

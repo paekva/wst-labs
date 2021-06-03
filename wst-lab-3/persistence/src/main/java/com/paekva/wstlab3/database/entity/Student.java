@@ -21,14 +21,5 @@ public class Student {
 
   private Date birthDate;
 
-  @Override
-  public String toString() {
-    return "Student{" +
-        "id=" + id +
-        ", group number='" + groupNumber + '\'' +
-        ", email='" + email + '\'' +
-        ", is local=" + isLocal +
-        ", birth date=" + birthDate +
-        '}';
-  }
+  private byte[] avatar = null;
 }

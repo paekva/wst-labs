@@ -37,7 +37,9 @@ public class StudentDAO {
 
     private final String BIRTH_DATE = "birth_date";
 
-    private final String[] columnNames = {ID, PASSWORD, EMAIL, GROUP_NUMBER, IS_LOCAL, BIRTH_DATE};
+    private final String AVATAR = "avatar";
+
+    private final String[] columnNames = {ID, PASSWORD, EMAIL, GROUP_NUMBER, IS_LOCAL, BIRTH_DATE, AVATAR};
 
     public List<Student> findAll() throws SQLException {
         log.info("Find all");
@@ -117,7 +119,8 @@ public class StudentDAO {
         String groupNumber = rs.getString(GROUP_NUMBER);
         Boolean isLocal = rs.getBoolean(IS_LOCAL);
         Date birthDate = rs.getDate(BIRTH_DATE);
-        return new Student(id, password, email, groupNumber, isLocal, birthDate);
+        byte[] avatar = rs.getBytes(AVATAR);
+        return new Student(id, password, email, groupNumber, isLocal, birthDate, avatar);
     }
 
     public boolean update(
