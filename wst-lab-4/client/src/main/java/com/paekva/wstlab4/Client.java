@@ -40,8 +40,6 @@ public class Client {
           Long id = readLong(reader);
           System.out.println("email:");
           String email = readString(reader);
-          System.out.println("password:");
-          String password = readString(reader);
           System.out.println("group number:");
           String groupNumber = readString(reader);
           System.out.println("is local:");
@@ -49,7 +47,7 @@ public class Client {
           System.out.println("birthDate(yyyy-mm-dd):");
           XMLGregorianCalendar birthDate = readDate(reader);
           System.out.println("Найдено:");
-          studentsResourceIntegration.findWithFilters(id, email, password, groupNumber, isLocal, birthDate)
+          studentsResourceIntegration.findWithFilters(id, email, groupNumber, isLocal, birthDate)
                   .stream()
                   .map(Client::studentToString)
                   .forEach(System.out::println);

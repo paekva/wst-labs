@@ -12,11 +12,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @XmlRootElement
 public class StudentDTO implements Serializable {
-    private String login;
+    private String email;
 
     private String password;
-
-    private String email;
 
     private String groupNumber;
 

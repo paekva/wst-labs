@@ -22,14 +22,13 @@ public class StudentsResourceIntegration {
     public List<Student> findAll() {
         Client client = Client.create();
         WebResource webResource = client.resource(FIND_ALL_URL);
-        return getUsers(webResource);
+        return getStudents(webResource);
     }
 
     public List<Student> findWithFilters(
             Long id,
-            String login,
-            String password,
             String email,
+            String groupNumber,
             Boolean isLocal,
             XMLGregorianCalendar birthDate
     ) {
@@ -38,14 +37,11 @@ public class StudentsResourceIntegration {
         if (id != null) {
             webResource = webResource.queryParam("id", id + "");
         }
-        if (login != null) {
-            webResource = webResource.queryParam("login", login);
-        }
-        if (password != null) {
-            webResource = webResource.queryParam("password", password);
-        }
         if (email != null) {
             webResource = webResource.queryParam("email", email);
+        }
+        if (groupNumber != null) {
+            webResource = webResource.queryParam("groupNumber", groupNumber);
         }
         if (isLocal != null) {
             webResource = webResource.queryParam("isLocal", isLocal.toString());
@@ -53,10 +49,10 @@ public class StudentsResourceIntegration {
         if (birthDate != null) {
             webResource = webResource.queryParam("birthDate", birthDate.toString());
         }
-        return getUsers(webResource);
+        return getStudents(webResource);
     }
 
-    private List<Student> getUsers(final WebResource webResource) {
+    private List<Student> getStudents(final WebResource webResource) {
         ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON_TYPE)
                 .get(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
