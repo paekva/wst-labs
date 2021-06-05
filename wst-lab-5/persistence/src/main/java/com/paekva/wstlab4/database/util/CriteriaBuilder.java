@@ -66,4 +66,26 @@ public class CriteriaBuilder {
         }
         builder.setLength(builder.length() - 1);
     }
+
+
+    public CriteriaBuilder insert(String tableName) {
+        builder = new StringBuilder("INSERT INTO ");
+        append(tableName);
+        return this;
+    }
+
+    public void columns(String... columns) {
+        builder.append("(");
+        for (String column : columns) {
+            append(column, ",");
+        }
+        builder.setLength(builder.length() - 1);
+        builder.append(") ");
+    }
+
+    public CriteriaBuilder values(Predicate predicate) {
+        append("VALUES(").append(predicate).append(")");
+        return this;
+    }
+
 }

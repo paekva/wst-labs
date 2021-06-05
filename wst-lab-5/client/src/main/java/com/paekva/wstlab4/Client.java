@@ -29,7 +29,8 @@ public class Client {
                     System.out.println("2. Применить фильтры");
                     System.out.println("3. Удалить информацию о студенте");
                     System.out.println("4. Изменить информацию о студенте");
-                    System.out.println("5. Выйти");
+                    System.out.println("5. Добавить информацию о студенте");
+                    System.out.println("6. Выйти");
                     currentState = readState(currentState, reader);
                     break;
                 case 1:
@@ -78,12 +79,30 @@ public class Client {
                     birthDate = readDate(reader);
                     StudentDTO studentDTO = new StudentDTO(email, password, groupNumber, isLocal, birthDate != null ? birthDate.toString() : null);
                     System.out.println(String.format(
-                            "Обновлено %s пользователей", studentsResourceIntegration.update(id, studentDTO)
+                            "Обновлено %s пользователь", studentsResourceIntegration.update(id, studentDTO)
                             )
                     );
                     currentState = 0;
                     break;
                 case 5:
+                    System.out.println("email:");
+                    email = readString(reader);
+                    System.out.println("password:");
+                    password = readString(reader);
+                    System.out.println("group number:");
+                    groupNumber = readString(reader);
+                    System.out.println("is local:");
+                    isLocal = readBoolean(reader);
+                    System.out.println("birthDate(yyyy-mm-dd):");
+                    birthDate = readDate(reader);
+                    studentDTO = new StudentDTO(email, password, groupNumber, isLocal, birthDate != null ? birthDate.toString() : null);
+                    System.out.println(String.format(
+                            "Обновлено %s пользователей", studentsResourceIntegration.insert(studentDTO)
+                            )
+                    );
+                    currentState = 0;
+                    break;
+                case 6:
                     return;
                 default:
                     currentState = 0;

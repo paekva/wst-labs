@@ -91,6 +91,21 @@ public class StudentsResourceIntegration {
         return checkClientResponse(response);
     }
 
+    public Long insert(StudentDTO studentDTO) {
+        Client client = Client.create();
+        WebResource webResource = client.resource(BASE_URL);
+        ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN)
+                .entity(studentDTO)
+                .post(ClientResponse.class);
+        if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
+            throw new IllegalStateException(String.format("Request failed. HTTP code: %s - %s",
+                    response.getStatus(), response.getStatusInfo())
+            );
+        }
+        GenericType<String> type = new GenericType<String>() {
+        };
+        return Long.parseLong(response.getEntity(type));
+    }
 
     private int checkClientResponse(final ClientResponse response) {
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {

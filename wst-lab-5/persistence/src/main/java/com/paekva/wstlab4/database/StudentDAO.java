@@ -190,4 +190,46 @@ public class StudentDAO {
             return -1;
         }
     }
+
+    public Long insert(
+            String email,
+            String password,
+            String groupNumber,
+            Boolean isLocal,
+            Date birthDate
+    )
+            throws SQLException {
+        log.debug("Insert new entity: {} {} {} {} {} ", email, password, groupNumber, isLocal, birthDate);
+
+        CriteriaBuilder cb = new CriteriaBuilder();
+        cb = cb.insert(TABLE_NAME);
+
+        cb.columns(EMAIL, PASSWORD, GROUP_NUMBER, IS_LOCAL, BIRTH_DATE);
+
+        Predicate where = new Predicate();
+        where = where.comma(email);
+        where = where.comma(password);
+        where = where.comma(groupNumber);
+        where = where.comma(isLocal.toString());
+        if (birthDate != null) {
+            where = where.comma(new SimpleDateFormat("yyyy.MM.dd")
+                    .format(birthDate));
+        }
+
+        cb.values(where);
+
+        String c = cb.toString();
+        log.debug("Query string {}", cb);
+        try (Connection connection = dataSource.getConnection()) {
+            java.sql.PreparedStatement s = connection.prepareStatement(
+                    c,
+                    Statement.RETURN_GENERATED_KEYS);
+            int update = s.executeUpdate();
+            ResultSet rs = s.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                return new Long(update);
+            }
+        }
+        return -1L;
+    }
 }

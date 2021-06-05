@@ -15,6 +15,16 @@ public class Predicate {
         return this;
     }
 
+
+    public Predicate comma(String value) {
+        if (builder == null) {
+            builder = new StringBuilder("'" + value + "'");
+        } else {
+            builder.append(",'").append(value).append("'");
+        }
+        return this;
+    }
+
     @Override
     public String toString() {
         return builder.toString();

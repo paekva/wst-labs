@@ -112,4 +112,23 @@ public class StudentsService {
         }
         return String.valueOf(update);
     }
+
+
+    @POST
+    @WebMethod
+    @Produces(MediaType.TEXT_PLAIN)
+    public String insert(StudentDTO studentDTO) {
+        try {
+            Date parse = studentDTO.getBirthDate() != null ? new SimpleDateFormat("yyyy-MM-dd").parse(studentDTO.getBirthDate()) : null;
+            return String.valueOf(studentDAO.insert(studentDTO.getPassword(),
+                    studentDTO.getEmail(), studentDTO.getGroupNumber(), studentDTO.getIsLocal(), parse)
+            );
+        } catch (SQLException e) {
+            String message = "SQL exception: " + e.getMessage() + ". State: " + e.getSQLState();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(-1L);
+    }
+
 }
