@@ -5,18 +5,15 @@ import com.paekva.wstlab4.database.util.CriteriaBuilder;
 import com.paekva.wstlab4.database.util.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 
 import javax.sql.DataSource;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -133,5 +130,64 @@ public class StudentDAO {
         Connection connection = dataSource.getConnection();
         Statement s = connection.createStatement();
         return s.executeUpdate(c);
+    }
+
+
+    public int update(
+            Long id, String email, String password, String groupNumber,
+            Boolean isLocal, Date birthDate
+    ) throws SQLException {
+        log.debug(
+                "Update entity with id: {}. New values: {} {} {} {} {} ",
+                id,
+                email,
+                password,
+                groupNumber,
+                isLocal,
+                birthDate);
+
+        CriteriaBuilder cb = new CriteriaBuilder();
+        cb = cb.update(TABLE_NAME);
+
+        final ArrayList<Map.Entry<String, String>> toUpdate = new ArrayList<>();
+        if (email != null) {
+            var emailColumn = new AbstractMap.SimpleImmutableEntry<String, String>(EMAIL, email);
+            toUpdate.add(emailColumn);
+        }
+        if (password != null) {
+            var passwordColumn = new AbstractMap.SimpleImmutableEntry<String, String>(PASSWORD, password);
+            toUpdate.add(passwordColumn);
+        }
+        if (groupNumber != null) {
+            var groupNumberColumn = new AbstractMap.SimpleImmutableEntry<String, String>(GROUP_NUMBER, groupNumber);
+            toUpdate.add(groupNumberColumn);
+        }
+        if (isLocal != null) {
+            var isLocalColumn = new AbstractMap.SimpleImmutableEntry<String, String>(
+                    IS_LOCAL,
+                    isLocal.toString());
+            toUpdate.add(isLocalColumn);
+        }
+        if (birthDate != null) {
+            var birthDateColumn = new AbstractMap.SimpleImmutableEntry<String, String>(
+                    BIRTH_DATE,
+                    new SimpleDateFormat("yyyy.MM.dd")
+                            .format(birthDate));
+            toUpdate.add(birthDateColumn);
+        }
+
+        cb.setColumns(toUpdate);
+
+        Predicate predicate = new Predicate();
+        cb.where(predicate.and(ID + " = " + id.toString()));
+
+        String c = cb.toString();
+        log.debug("Query string {}", cb);
+        try (Connection connection = dataSource.getConnection()) {
+            java.sql.PreparedStatement s = connection.prepareStatement(c);
+            return s.executeUpdate();
+        } catch (SQLException e) {
+            return -1;
+        }
     }
 }

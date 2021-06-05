@@ -1,5 +1,6 @@
 package com.paekva.wstlab4.util;
 
+import com.paekva.wstlab4.database.dto.StudentDTO;
 import com.paekva.wstlab4.database.entity.Student;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -20,6 +21,8 @@ public class StudentsResourceIntegration {
     private final static String FILTER_URL = BASE_URL + "filter";
 
     private final static String DELETE_URL = BASE_URL + "%d";
+
+    private final static String UPDATE_URL = BASE_URL + "%d";
 
     public List<Student> findAll() {
         Client client = Client.create();
@@ -73,6 +76,18 @@ public class StudentsResourceIntegration {
         }
         WebResource webResource = client.resource(String.format(DELETE_URL, id));
         ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN).delete(ClientResponse.class);
+        return checkClientResponse(response);
+    }
+
+    public int update(Long id, StudentDTO studentDTO) {
+        Client client = Client.create();
+        if (id == null) {
+            return -1;
+        }
+        WebResource webResource = client.resource(String.format(UPDATE_URL, id));
+        ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN)
+                .entity(studentDTO)
+                .put(ClientResponse.class);
         return checkClientResponse(response);
     }
 

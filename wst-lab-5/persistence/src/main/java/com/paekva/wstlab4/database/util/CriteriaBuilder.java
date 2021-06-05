@@ -1,5 +1,7 @@
 package com.paekva.wstlab4.database.util;
 
+import java.util.Map;
+
 public class CriteriaBuilder {
     StringBuilder builder;
 
@@ -46,5 +48,22 @@ public class CriteriaBuilder {
     public CriteriaBuilder delete() {
         builder = new StringBuilder("DELETE ");
         return this;
+    }
+
+    public CriteriaBuilder update(String tableName) {
+        builder = new StringBuilder("UPDATE ");
+        append(tableName);
+        append("SET");
+
+        return this;
+    }
+
+    public void setColumns(Iterable<Map.Entry<String, String>> columns) {
+        for (Map.Entry<String, String> column : columns) {
+            append(column.getKey(), "= '");
+            builder.append(column.getValue());
+            builder.append("',");
+        }
+        builder.setLength(builder.length() - 1);
     }
 }

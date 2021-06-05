@@ -1,6 +1,7 @@
 package com.paekva.wstlab4.service;
 
 import com.paekva.wstlab4.database.StudentDAO;
+import com.paekva.wstlab4.database.dto.StudentDTO;
 import com.paekva.wstlab4.database.entity.Student;
 import com.paekva.wstlab4.standalone.App;
 import com.zaxxer.hikari.HikariConfig;
@@ -91,5 +92,24 @@ public class StudentsService {
         } catch (SQLException e) {
             return "SQL exception: " + e.getMessage() + ". State: " + e.getSQLState();
         }
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String update(@PathParam("id") Long id, StudentDTO studentDTO) {
+        int update = 0;
+        try {
+            Date parse = studentDTO.getBirthDate() != null ? new SimpleDateFormat("yyyy-MM-dd").parse(studentDTO.getBirthDate()) : null;
+            update = studentDAO.update(id, studentDTO.getEmail(), studentDTO.getPassword(), studentDTO.getGroupNumber(), studentDTO.getIsLocal(), parse);
+            if (update < 0) {
+                return String.format("Can't update User. User with specified id: %s not found ", id);
+            }
+        } catch (SQLException e) {
+            return "SQL exception: " + e.getMessage() + ". State: " + e.getSQLState();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(update);
     }
 }
