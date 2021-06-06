@@ -146,7 +146,7 @@
 ## Дополнительная информация: БД PostgreSQL
 После того, как PostgreSQL запущен, содержимое таблицы можно посмотреть следующим образом:
 
-    paekva@paekva-Vostro-3480:~/projects/wst-labs/wst-lab-3$ cat psql.sh 
+    paekva@paekva-Vostro-3480:~/projects/wst-labs/wst-lab-7$ cat psql.sh 
     #!/bin/bash
     psql 'postgresql://admin:admin@localhost/db_lab1_wst'
     paekva@paekva-Vostro-3480:~/projects/wst-labs/wst-lab-7$ ./psql.sh 
