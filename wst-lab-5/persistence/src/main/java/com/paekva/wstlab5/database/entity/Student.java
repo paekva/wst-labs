@@ -1,4 +1,4 @@
-package com.paekva.wstlab4.database.entity;
+package com.paekva.wstlab5.database.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

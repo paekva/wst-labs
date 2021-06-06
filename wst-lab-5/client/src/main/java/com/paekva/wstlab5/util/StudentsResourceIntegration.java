@@ -1,7 +1,7 @@
-package com.paekva.wstlab4.util;
+package com.paekva.wstlab5.util;
 
-import com.paekva.wstlab4.database.dto.StudentDTO;
-import com.paekva.wstlab4.database.entity.Student;
+import com.paekva.wstlab5.database.dto.StudentDTO;
+import com.paekva.wstlab5.database.entity.Student;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;

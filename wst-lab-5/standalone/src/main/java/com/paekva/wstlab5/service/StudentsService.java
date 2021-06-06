@@ -1,9 +1,9 @@
-package com.paekva.wstlab4.service;
+package com.paekva.wstlab5.service;
 
-import com.paekva.wstlab4.database.StudentDAO;
-import com.paekva.wstlab4.database.dto.StudentDTO;
-import com.paekva.wstlab4.database.entity.Student;
-import com.paekva.wstlab4.standalone.App;
+import com.paekva.wstlab5.database.StudentDAO;
+import com.paekva.wstlab5.database.dto.StudentDTO;
+import com.paekva.wstlab5.database.entity.Student;
+import com.paekva.wstlab5.standalone.App;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Data;

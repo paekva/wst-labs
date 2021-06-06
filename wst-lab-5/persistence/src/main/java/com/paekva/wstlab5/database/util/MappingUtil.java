@@ -1,4 +1,4 @@
-package com.paekva.wstlab4.database.util;
+package com.paekva.wstlab5.database.util;
 
 import java.sql.Types;
 import java.util.Date;

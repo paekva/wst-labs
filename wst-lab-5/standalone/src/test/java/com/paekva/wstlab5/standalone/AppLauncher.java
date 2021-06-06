@@ -1,4 +1,4 @@
-package com.paekva.wstlab4.standalone;
+package com.paekva.wstlab5.standalone;
 
 import java.io.IOException;
 

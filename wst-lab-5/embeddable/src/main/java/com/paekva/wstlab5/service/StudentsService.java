@@ -1,7 +1,7 @@
-package com.paekva.wstlab4.service;
+package com.paekva.wstlab5.service;
 
-import com.paekva.wstlab4.database.StudentDAO;
-import com.paekva.wstlab4.database.entity.Student;
+import com.paekva.wstlab5.database.StudentDAO;
+import com.paekva.wstlab5.database.entity.Student;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 

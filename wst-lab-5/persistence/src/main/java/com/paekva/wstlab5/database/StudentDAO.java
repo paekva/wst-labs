@@ -1,14 +1,13 @@
-package com.paekva.wstlab4.database;
+package com.paekva.wstlab5.database;
 
-import com.paekva.wstlab4.database.entity.Student;
-import com.paekva.wstlab4.database.util.CriteriaBuilder;
-import com.paekva.wstlab4.database.util.Predicate;
+import com.paekva.wstlab5.database.entity.Student;
+import com.paekva.wstlab5.database.util.CriteriaBuilder;
+import com.paekva.wstlab5.database.util.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 
 import javax.sql.DataSource;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.Serializable;
 import java.sql.*;
 import java.text.SimpleDateFormat;

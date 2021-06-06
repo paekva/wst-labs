@@ -1,4 +1,4 @@
-package com.paekva.wstlab4.service;
+package com.paekva.wstlab5.service;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

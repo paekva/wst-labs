@@ -1,6 +1,6 @@
-package com.paekva.wstlab4.service;
+package com.paekva.wstlab5.service;
 
-import com.paekva.wstlab4.database.StudentDAO;
+import com.paekva.wstlab5.database.StudentDAO;
 import lombok.Data;
 
 import javax.annotation.ManagedBean;

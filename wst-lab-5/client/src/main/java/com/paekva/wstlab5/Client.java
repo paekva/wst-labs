@@ -1,8 +1,8 @@
-package com.paekva.wstlab4;
+package com.paekva.wstlab5;
 
-import com.paekva.wstlab4.database.dto.StudentDTO;
-import com.paekva.wstlab4.database.entity.Student;
-import com.paekva.wstlab4.util.StudentsResourceIntegration;
+import com.paekva.wstlab5.database.dto.StudentDTO;
+import com.paekva.wstlab5.database.entity.Student;
+import com.paekva.wstlab5.util.StudentsResourceIntegration;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;

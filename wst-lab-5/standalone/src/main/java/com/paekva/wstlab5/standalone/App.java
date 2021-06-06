@@ -1,6 +1,6 @@
-package com.paekva.wstlab4.standalone;
+package com.paekva.wstlab5.standalone;
 
-import com.paekva.wstlab4.service.StudentsService;
+import com.paekva.wstlab5.service.StudentsService;
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 import com.sun.jersey.api.core.ClassNamesResourceConfig;
 import lombok.extern.slf4j.Slf4j;
