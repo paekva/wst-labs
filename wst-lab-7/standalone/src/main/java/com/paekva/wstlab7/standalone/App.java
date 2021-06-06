@@ -15,7 +15,7 @@ import java.util.Properties;
 @Slf4j
 public class App {
     public static void main(String... args) {
-        String url = "http://0.0.0.0:8080/students";
+        String url = "http://0.0.0.0:8081/students";
 
         DataSource dataSource = initDataSource();
 
