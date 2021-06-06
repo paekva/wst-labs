@@ -148,23 +148,22 @@
     paekva@paekva-Vostro-3480:~/projects/wst-labs/wst-lab-3$ cat psql.sh 
     #!/bin/bash
     psql 'postgresql://admin:admin@localhost/db_lab1_wst'
-    paekva@paekva-Vostro-3480:~/projects/wst-labs/wst-lab-3$ ./psql.sh
-    psql (12.6 (Ubuntu 12.6-0ubuntu0.20.04.1), server 13.2 (Debian 13.2-1.pgdg100+1))
-    WARNING: psql major version 12, server major version 13.
-    Some psql features might not work.
-    Type "help" for help.
-    
-    db_lab1_wst=> \dt
-    List of relations
-    Schema |   Name   | Type  | Owner
-    --------+----------+-------+-------
-    public | students | table | admin
-    (1 row)
-    
-    db_lab1_wst=> select * from students;
-    id |     email      | password |          name          | group_number | birth_date | is_local
-    ----+----------------+----------+------------------------+--------------+------------+----------
-    1 | first@mail.ru  | first    | Иванов Иван Иванович   | 1a           | 1998-01-01 | t
-    2 | second@mail.ru | second   | Петров Петр Петрович   | 2a           | 1998-02-02 | t
-    3 | third@mail.ru  | third    | Иванова Алина Ивановна | 3a           | 1998-03-03 | f
-    (3 rows)
+    paekva@paekva-Vostro-3480:~/projects/wst-labs/wst-lab-7$ ./psql.sh 
+	psql (12.6 (Ubuntu 12.6-0ubuntu0.20.04.1), server 13.2 (Debian 13.2-1.pgdg100+1))
+	WARNING: psql major version 12, server major version 13.
+	         Some psql features might not work.
+	Type "help" for help.
+	db_lab1_wst=> \dt
+	         List of relations
+	 Schema |   Name   | Type  | Owner 
+	--------+----------+-------+-------
+	 public | students | table | admin
+	(1 row)
+	db_lab1_wst=> select * from students;
+	 id |     email      | password | group_number | birth_date | is_local 
+	----+----------------+----------+--------------+------------+----------
+	  1 | first@mail.ru  | first    | 1a           | 1998-01-01 | t
+	  2 | second@mail.ru | second   | 2a           | 1998-02-02 | t
+	  3 | third@mail.ru  | third    | 3a           | 1998-03-03 | f
+	(3 rows)
+	db_lab1_wst=> 
