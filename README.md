@@ -150,6 +150,76 @@
        Student{id=3, email='third@mail.ru', group number='3a', is local=false, birthDate=1998-03-03T00:00:00+03:00}
        Student{id=4, email='updated@addres.ru', group number='e3', is local=false, birthDate=2021-01-01T00:00:00+03:00}
 
+### Пример 4: Регистрация сервиса
+	Выберите один из пунктов:
+	0. Вывести help
+	1. Список бизнесов
+	2. Зарегистрировать бизнес
+	3. Зарегистрировать сервис
+	4. Найти сервис
+	5. Использовать сервис
+	6. Выйти
+	3
+	===============================================
+	Business Key: uddi:juddi.apache.org:node1
+	Name: An Apache jUDDI Node
+	Description: This is a UDDI registry node as implemented by Apache jUDDI.
+	===============================================
+	Business Key: uddi:juddi.apache.org:a7c37f47-69fa-4aa6-98d1-49c60d2f330a
+	Name: wst-lab-7
+	Description: 
+	Введите ключ бизнеса
+	uddi:juddi.apache.org:a7c37f47-69fa-4aa6-98d1-49c60d2f330a
+	Введите имя сервиса
+	students-service
+	Введите ссылку на wsdl
+	http://localhost:8081/students?wsdl
+	
+	Retrieving document at 'http://localhost:8081/students?wsdl'.
+	Retrieving schema at 'http://localhost:8081/students?xsd=1', relative to 'http://localhost:8081/students?wsdl'.
+	Services published from wsdl http://localhost:8081/students?wsdl
+	-------------------------------------------
+	Service Key: uddi:juddi.apache.org:892166e4-5845-4139-9f3a-269f1e7af8d5
+	Owning Business Key: uddi:juddi.apache.org:a7c37f47-69fa-4aa6-98d1-49c60d2f330a
+	Name: Lang: null
+	Value: students-service
+	Lang: null
+	Value: students
+	Binding Key: uddi:juddi.apache.org:0b73101a-c28e-4ba2-8bb7-d1872c55cfd1
+	Access Point: http://localhost:8081/students?wsdl type wsdlDeployment
+	Use this access point value as a URL to a WSDL document, which presumably will have a real access point defined.
+	Binding Key: uddi:juddi.apache.org:6cc1c4fa-908a-4a28-a34f-8c3e97a31bce
+	Access Point: http://localhost:8081/students type endPoint
+	Use this access point value as an invocation endpoint.
+
+### Пример 5: Использование сервиса
+	Выберите один из пунктов:
+	0. Вывести help
+	1. Список бизнесов
+	2. Зарегистрировать бизнес
+	3. Зарегистрировать сервис
+	4. Найти сервис
+	5. Использовать сервис
+	6. Выйти
+	
+	5
+	Введите ключ сервиса
+	uddi:juddi.apache.org:892166e4-5845-4139-9f3a-269f1e7af8d5
+	Using endpoint 'http://localhost:8081/students'
+
+	Выберите один из пунктов:
+	0. Вывести help
+	1. Вывести список всех студентов
+	2. Применить фильтры
+	3. Добавить информацию о студенте
+	4. Обновить информацию о студенте
+	5. Удалить информацию о студенте
+	6. Выйти
+	1
+	Student{id=1, email='first@mail.ru', group number='1a', is local=true, birthDate=1998-01-01T00:00:00+03:00}
+	Student{id=2, email='second@mail.ru', group number='2a', is local=true, birthDate=1998-02-02T00:00:00+03:00}
+	Student{id=3, email='third@mail.ru', group number='3a', is local=false, birthDate=1998-03-03T00:00:00+03:00}
+
 
 
 ## Дополнительная информация: БД PostgreSQL
@@ -181,7 +251,11 @@
 ## Дополнительная информация: jUUDI
 
 скрипты для удобной работы с jUDDI:
+
 ``run_juddi.sh`` - запустить jUDDI
+
 ``kill_juddi.sh`` - остановить jUDDI
+
 ``is_juddi_running.sh`` - проверить статус jUDDI
+
 ``purge_juddi.sh`` - удалить jUDDI
