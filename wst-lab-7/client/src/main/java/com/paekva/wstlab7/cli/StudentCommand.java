@@ -1,9 +1,9 @@
-package com.paekva.wstlab7;
+package com.paekva.wstlab7.cli;
 
 import lombok.Getter;
 import lombok.Setter;
 
-public enum ConsoleOption {
+public enum StudentCommand {
     FIND_ALL("Вывести список всех студентов"),
     FIND_BY_FILTERS("Применить фильтры"),
     INSERT("Добавить информацию о студенте"),
@@ -15,7 +15,7 @@ public enum ConsoleOption {
     @Setter
     private String help;
 
-    ConsoleOption(String help) {
+    StudentCommand(String help) {
         this.help = help;
     }
 }
