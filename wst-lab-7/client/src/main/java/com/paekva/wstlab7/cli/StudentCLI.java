@@ -36,13 +36,13 @@ public class StudentCLI {
                     case FIND_BY_FILTERS:
                         System.out.println("\nЧтобы не применять фильтр, оставьте значение пустым");
                         id = readLong(reader);
-                        studentDTO = readUser(reader);
+                        studentDTO = readStudent(reader);
                         studentsServicePort.findWithFilters(id, studentDTO.getEmail(), studentDTO.getPassword(),
                                 studentDTO.getGroupNumber(), studentDTO.getIsLocal(), studentDTO.getBirthDate())
                                 .stream().map(StudentCLI::studentToString).forEach(System.out::println);
                         break;
                     case INSERT:
-                        studentDTO = readUser(reader);
+                        studentDTO = readStudent(reader);
                         System.out.println(studentsServicePort.insert(studentDTO.getEmail(), studentDTO.getPassword(),
                                 studentDTO.getGroupNumber(), studentDTO.getIsLocal(), studentDTO.getBirthDate()));
                         break;
@@ -50,7 +50,7 @@ public class StudentCLI {
                         System.out.println("\nВведите id:");
                         id = readLong(reader);
                         System.out.println("\nЧтобы не изменять значение поля, оставьте значение пустым");
-                        studentDTO = readUser(reader);
+                        studentDTO = readStudent(reader);
                         System.out.println(studentsServicePort.update(id, studentDTO.getEmail(), studentDTO.getPassword(),
                                 studentDTO.getGroupNumber(), studentDTO.getIsLocal(), studentDTO.getBirthDate()));
                         break;
@@ -69,7 +69,7 @@ public class StudentCLI {
         }
     }
 
-    private static StudentDTO readUser(BufferedReader reader) throws IOException {
+    private static StudentDTO readStudent(BufferedReader reader) throws IOException {
         System.out.println("email:");
         String email = readString(reader);
         System.out.println("password:");
