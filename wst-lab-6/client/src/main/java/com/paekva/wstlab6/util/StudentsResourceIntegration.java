@@ -10,11 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.sql.SQLException;
+import java.util.Base64;
 import java.util.List;
 
 @Slf4j
 public class StudentsResourceIntegration {
+    static final String creds = Base64.getEncoder().encodeToString("admin:123456".getBytes());
+
     private final static String BASE_URL = "http://localhost:8080/students/";
 
     private final static String FIND_ALL_URL = BASE_URL + "all";
@@ -25,7 +27,7 @@ public class StudentsResourceIntegration {
 
     private final static String UPDATE_URL = BASE_URL + "%d";
 
-    public List<Student> findAll() throws SQLException {
+    public List<Student> findAll() throws Exception {
         Client client = Client.create();
         WebResource webResource = client.resource(FIND_ALL_URL);
         return getStudents(webResource);
@@ -37,7 +39,7 @@ public class StudentsResourceIntegration {
             String groupNumber,
             Boolean isLocal,
             XMLGregorianCalendar birthDate
-    ) throws SQLException {
+    ) throws Exception {
         Client client = Client.create();
         WebResource webResource = client.resource(FILTER_URL);
         if (id != null) {
@@ -58,11 +60,12 @@ public class StudentsResourceIntegration {
         return getStudents(webResource);
     }
 
-    private List<Student> getStudents(final WebResource webResource) {
+    private List<Student> getStudents(final WebResource webResource) throws Exception {
         ClientResponse response = webResource.accept(MediaType.APPLICATION_JSON_TYPE)
+                .header("Authorization", "Basic " + creds)
                 .get(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
-            throw new IllegalStateException("Request failed. HTTP code: " + response.getStatus());
+            throwNecessaryException(response);
         }
         GenericType<List<Student>> type = new GenericType<List<Student>>() {
         };
@@ -76,7 +79,9 @@ public class StudentsResourceIntegration {
             return -1;
         }
         WebResource webResource = client.resource(String.format(DELETE_URL, id));
-        ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN).delete(ClientResponse.class);
+        ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN)
+                .header("Authorization", "Basic " + creds)
+                .delete(ClientResponse.class);
         return clientIntResponseOrException(response);
     }
 
@@ -87,6 +92,7 @@ public class StudentsResourceIntegration {
         }
         WebResource webResource = client.resource(String.format(UPDATE_URL, id));
         ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN)
+                .header("Authorization", "Basic " + creds)
                 .entity(studentDTO)
                 .put(ClientResponse.class);
         return clientIntResponseOrException(response);
@@ -96,6 +102,7 @@ public class StudentsResourceIntegration {
         Client client = Client.create();
         WebResource webResource = client.resource(BASE_URL);
         ClientResponse response = webResource.accept(MediaType.TEXT_PLAIN)
+                .header("Authorization", "Basic " + creds)
                 .entity(studentDTO)
                 .post(ClientResponse.class);
         if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {

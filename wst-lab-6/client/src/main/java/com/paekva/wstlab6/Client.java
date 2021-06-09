@@ -111,6 +111,7 @@ public class Client {
                 }
             } catch (Exception ex) {
                 System.out.println("Ошибка: " + ex.getMessage());
+                currentState = 0;
             }
         }
     }

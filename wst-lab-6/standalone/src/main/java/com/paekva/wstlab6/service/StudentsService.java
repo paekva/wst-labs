@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -47,7 +48,9 @@ public class StudentsService {
     @GET
     @Path("/all")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Student> findAll() throws SQLException {
+    public List<Student> findAll(@HeaderParam("Authorization") String auth) throws SQLException, StudentServiceException {
+        checkAuth(auth);
+
         return studentDAO.findAll();
     }
 
@@ -60,8 +63,11 @@ public class StudentsService {
             @QueryParam("password") String password,
             @QueryParam("groupNumber") String groupNumber,
             @QueryParam("isLocal") Boolean isLocal,
-            @QueryParam("birthDate") String birthDate
-    ) throws SqlException {
+            @QueryParam("birthDate") String birthDate,
+            @HeaderParam("Authorization") String auth
+    ) throws SqlException, StudentServiceException {
+        checkAuth(auth);
+
         Date date;
         if (birthDate != null) {
             try {
@@ -82,7 +88,10 @@ public class StudentsService {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String delete(@PathParam("id") Long id) throws StudentServiceException, SqlException {
+    public String delete(@PathParam("id") Long id, @HeaderParam("Authorization") String auth)
+            throws StudentServiceException, SqlException {
+        checkAuth(auth);
+
         try {
             if (id == null) {
                 String message = "Id can't be null";
@@ -103,7 +112,10 @@ public class StudentsService {
     @PUT
     @Path("/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String update(@PathParam("id") Long id, StudentDTO studentDTO) throws StudentServiceException, SqlException {
+    public String update(@PathParam("id") Long id, StudentDTO studentDTO, @HeaderParam("Authorization") String auth)
+            throws StudentServiceException, SqlException {
+        checkAuth(auth);
+
         int update = 0;
         try {
             Date parse = studentDTO.getBirthDate() != null ? new SimpleDateFormat("yyyy-MM-dd").parse(studentDTO.getBirthDate()) : null;
@@ -126,7 +138,10 @@ public class StudentsService {
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)
-    public String insert(StudentDTO studentDTO) throws StudentServiceException, SqlException {
+    public String insert(StudentDTO studentDTO, @HeaderParam("Authorization") String auth)
+            throws StudentServiceException, SqlException {
+        checkAuth(auth);
+
         if (studentDTO.getEmail() == null || studentDTO.getPassword() == null || studentDTO.getGroupNumber() == null || studentDTO.getIsLocal() == null || studentDTO.getBirthDate() == null) {
             String message = "Все поля должны быть заполнены.";
             throw new StudentServiceException(message);
@@ -144,4 +159,23 @@ public class StudentsService {
         }
     }
 
+    private void checkAuth(String header) throws StudentServiceException {
+        if (header == null)
+            throw new StudentServiceException("Нет заголовков");
+
+        String[] creds = new String[]{};
+        String base64 = header.split(" ")[1];
+        try {
+            creds  = (new String(Base64.getDecoder().decode(base64))).split(":");
+        } catch (Exception e) {
+            throw new StudentServiceException("Проблемы с токеном");
+        }
+
+        String username = creds[0];
+        String password = creds[1];
+        //Should validate username and password with database
+        if (!(username.equals("admin") && password.equals("123456"))) {
+            throw new StudentServiceException("Не авторизован");
+        }
+    }
 }
