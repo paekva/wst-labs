@@ -7,18 +7,18 @@ import lombok.NoArgsConstructor;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.handler.MessageContext;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.Exception;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
+import java.util.*;
 
 public class Client {
-    public static void main(String... args) throws SQLException_Exception, IOException {
+    public static void main(String... args) throws Exception {
         URL url = new URL("http://localhost:8080/students?wsdl");
         Students studentsService = new Students(url);
         StudentsService studentsServicePort = studentsService.getStudentsServicePort();
@@ -29,6 +29,16 @@ public class Client {
         StudentDTO studentDTO;
         Long id;
 
+        /// basic-auth: applying header
+        Map<String, Object> req_ctx = ((BindingProvider)studentsServicePort).getRequestContext();
+        req_ctx.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, url.toString());
+
+        Map<String, List<String>> headers = new HashMap<>();
+
+        String creds = "admin:123456";
+        String base64 = Base64.getEncoder().encodeToString(creds.getBytes());
+        headers.put("Authorization",  Collections.singletonList("Basic " + base64));
+        req_ctx.put(MessageContext.HTTP_REQUEST_HEADERS, headers);
 
         while (true) {
             try {
@@ -75,8 +85,8 @@ public class Client {
                     case QUIT:
                         return;
                 }
-            } catch (StudentsServiceException e) {
-                System.out.println(e.getFaultInfo().getMessage());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
                 System.out.println("Пожалуйста, попробуйте снова!");
             }
         }
